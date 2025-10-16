@@ -18,7 +18,16 @@ import java.util.List;
  * Assignment Group Member #2
  * Date: October 15, 2025
  *
- * AI Tool Used: GitHub Copilot
+ * AI Tools Used: 
+ * 1. GitHub Copilot - Used for:
+ *    - Interface definitions and boilerplate code generation
+ *    - Test case suggestions and implementation
+ *    - Documentation formatting
+ * 
+ * 2. Anthropic Claude Sonnet 3.5 - Used for:
+ *    - Architecture design review
+ *    - SOLID principles validation
+ *    - Code quality suggestions
  * 
  * Refactoring Contributions:
  * 1. Strategy Pattern Implementation

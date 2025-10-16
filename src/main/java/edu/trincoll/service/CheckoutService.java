@@ -4,6 +4,9 @@ import edu.trincoll.model.Book;
 import edu.trincoll.model.BookStatus;
 import edu.trincoll.model.Member;
 import edu.trincoll.model.MembershipType;
+import edu.trincoll.service.api.ICheckoutService;
+import edu.trincoll.service.fee.LateFeeStrategy;
+import edu.trincoll.service.fee.LateFeeStrategyFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
