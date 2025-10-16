@@ -32,6 +32,9 @@ class CheckoutServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private LateFeeStrategyFactory lateFeeStrategyFactory;
+
     @InjectMocks
     private CheckoutService checkoutService;
 
@@ -235,13 +238,16 @@ class CheckoutServiceTest {
     }
 
     @Test
-    @DisplayName("Should calculate late fee for regular member")
+    @DisplayName("Should calculate late fee for regular member using strategy")
     void shouldCalculateLateFeeForRegularMember() {
         // Arrange
         availableBook.setStatus(BookStatus.CHECKED_OUT);
         availableBook.setCheckedOutBy(regularMember.getEmail());
         availableBook.setDueDate(LocalDate.now().minusDays(5)); // 5 days late
         regularMember.setBooksCheckedOut(1);
+        
+        RegularLateFeeStrategy regularStrategy = new RegularLateFeeStrategy();
+        when(lateFeeStrategyFactory.getStrategy(MembershipType.REGULAR)).thenReturn(regularStrategy);
 
         when(bookManagementService.findByIsbnOrThrow(availableBook.getIsbn())).thenReturn(availableBook);
         when(memberService.findByEmailOrThrow(regularMember.getEmail())).thenReturn(regularMember);
@@ -257,13 +263,16 @@ class CheckoutServiceTest {
     }
 
     @Test
-    @DisplayName("Should not charge late fee for premium member")
+    @DisplayName("Should not charge late fee for premium member using strategy")
     void shouldNotChargeLateFeeForPremiumMember() {
         // Arrange
         availableBook.setStatus(BookStatus.CHECKED_OUT);
         availableBook.setCheckedOutBy(premiumMember.getEmail());
         availableBook.setDueDate(LocalDate.now().minusDays(5)); // 5 days late
         premiumMember.setBooksCheckedOut(1);
+        
+        PremiumLateFeeStrategy premiumStrategy = new PremiumLateFeeStrategy();
+        when(lateFeeStrategyFactory.getStrategy(MembershipType.PREMIUM)).thenReturn(premiumStrategy);
 
         when(bookManagementService.findByIsbnOrThrow(availableBook.getIsbn())).thenReturn(availableBook);
         when(memberService.findByEmailOrThrow(premiumMember.getEmail())).thenReturn(premiumMember);
@@ -280,13 +289,16 @@ class CheckoutServiceTest {
     }
 
     @Test
-    @DisplayName("Should calculate late fee for student member")
+    @DisplayName("Should calculate late fee for student member using strategy")
     void shouldCalculateLateFeeForStudentMember() {
         // Arrange
         availableBook.setStatus(BookStatus.CHECKED_OUT);
         availableBook.setCheckedOutBy(studentMember.getEmail());
         availableBook.setDueDate(LocalDate.now().minusDays(4)); // 4 days late
         studentMember.setBooksCheckedOut(1);
+        
+        StudentLateFeeStrategy studentStrategy = new StudentLateFeeStrategy();
+        when(lateFeeStrategyFactory.getStrategy(MembershipType.STUDENT)).thenReturn(studentStrategy);
 
         when(bookManagementService.findByIsbnOrThrow(availableBook.getIsbn())).thenReturn(availableBook);
         when(memberService.findByEmailOrThrow(studentMember.getEmail())).thenReturn(studentMember);

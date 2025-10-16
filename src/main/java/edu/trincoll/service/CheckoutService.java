@@ -15,18 +15,21 @@ import java.time.LocalDate;
  */
 @Service
 @Transactional
-public class CheckoutService {
+public class CheckoutService implements ICheckoutService {
 
     private final BookManagementService bookManagementService;
     private final MemberService memberService;
     private final NotificationService notificationService;
+    private final LateFeeStrategyFactory lateFeeStrategyFactory;
 
     public CheckoutService(BookManagementService bookManagementService, 
                           MemberService memberService,
-                          NotificationService notificationService) {
+                          NotificationService notificationService,
+                          LateFeeStrategyFactory lateFeeStrategyFactory) {
         this.bookManagementService = bookManagementService;
         this.memberService = memberService;
         this.notificationService = notificationService;
+        this.lateFeeStrategyFactory = lateFeeStrategyFactory;
     }
 
     /**
@@ -134,17 +137,13 @@ public class CheckoutService {
     }
 
     /**
-     * Calculate late fee based on membership type and days late
+     * Calculate late fee using the appropriate strategy based on membership type
      */
     private double calculateLateFee(Book book, Member member) {
         if (book.getDueDate().isBefore(LocalDate.now())) {
             long daysLate = LocalDate.now().toEpochDay() - book.getDueDate().toEpochDay();
-
-            return switch (member.getMembershipType()) {
-                case REGULAR -> daysLate * 0.50;
-                case PREMIUM -> 0.0; // Premium members don't pay late fees
-                case STUDENT -> daysLate * 0.25;
-            };
+            LateFeeStrategy strategy = lateFeeStrategyFactory.getStrategy(member.getMembershipType());
+            return strategy.calculateLateFee(daysLate);
         }
         return 0.0;
     }

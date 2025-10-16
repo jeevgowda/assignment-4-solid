@@ -12,6 +12,43 @@ import java.util.List;
  * 
  * This class follows the Facade pattern and delegates to appropriate services
  * based on Single Responsibility Principle.
+ *
+ * AI Collaboration Documentation:
+ * ------------------------------
+ * Assignment Group Member #2
+ * Date: October 15, 2025
+ *
+ * AI Tool Used: GitHub Copilot
+ * 
+ * Refactoring Contributions:
+ * 1. Strategy Pattern Implementation
+ *    - Created LateFeeStrategy interface and implementations for different membership types
+ *    - Implemented LateFeeStrategyFactory for managing fee calculation strategies
+ *    - Applied Open-Closed Principle to make fee calculations extensible
+ *
+ * 2. Dependency Inversion Implementation
+ *    - Created service interfaces in edu.trincoll.service.api package
+ *    - Implemented IBookManagementService, IBookSearchService, ICheckoutService
+ *    - Implemented IMemberService, INotificationService, IReportService
+ *    - Ensured high-level modules depend on abstractions
+ *
+ * 3. SOLID Principles Applied:
+ *    - Open-Closed Principle: Fee calculation strategies can be extended
+ *    - Dependency Inversion: All services depend on abstractions
+ *    - Interface Segregation: Created focused service interfaces
+ *    - Single Responsibility: Each service has one clear purpose
+ *
+ * AI Usage Details:
+ * - Used AI to identify appropriate patterns and SOLID violations
+ * - Generated interface definitions based on existing implementations
+ * - Validated refactoring approach and SOLID compliance
+ * - Assisted in documentation generation and code organization
+ *
+ * Manual Contributions:
+ * - Business logic implementation in strategy classes
+ * - Service interface design decisions
+ * - Code review and quality assurance
+ * - Integration testing and bug fixing
  */
 @Service
 public class LibraryFacade {

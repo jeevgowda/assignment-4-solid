@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * Follows Dependency Inversion Principle - depends on abstraction, not concrete implementation.
  */
 @Service
-public class NotificationService {
+public class NotificationService implements INotificationService {
 
     /**
      * Send checkout notification to member
